@@ -1,0 +1,30 @@
+name: Pipeline 3.0
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Gerar artefato
+        run: zip -r pipeline-demo.zip
+
+      - name: Publicar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: codigo-buildado
+          path: pipeline-demo.zip
+  
+  test:
+    - name: Baixar artefato
+      uses: action/download-artifact@v4
+      with:
+        name: codigo-buildado
+    
+    - name: Extrair artefato
+      run: unzip pipeline-demo.zip
